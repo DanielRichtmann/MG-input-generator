@@ -1,0 +1,34 @@
+declare -r NLEVELS=2
+
+# the values of this paragraph for the coarser levels get filled in by the script
+declare -ai A_GLATTSIZE_X=(8)
+declare -ai A_GLATTSIZE_Y=(8)
+declare -ai A_GLATTSIZE_Z=(8)
+declare -ai A_GLATTSIZE_T=(8)
+declare -ai A_LLATTSIZE_X=(8)
+declare -ai A_LLATTSIZE_Y=(8)
+declare -ai A_LLATTSIZE_Z=(8)
+declare -ai A_LLATTSIZE_T=(8)
+
+declare -ar A_BLOCKSIZE_X=(4 2 1)
+declare -ar A_BLOCKSIZE_Y=(4 2 2)
+declare -ar A_BLOCKSIZE_Z=(4 2 1)
+declare -ar A_BLOCKSIZE_T=(4 2 1)
+
+declare -ar A_SETUP_ITERS=(0 0 0)
+declare -ar A_SMOOTHER_TOL=("1e-14" "1e-14" "1e-14")
+declare -ar A_SMOOTHER_MAX_OUTER_ITER=(4 4 4)
+declare -ar A_SMOOTHER_MAX_INNER_ITER=(4 4 4)
+
+declare -r KCYCLE="false"
+declare -r KCYCLE_TOL="1e-1"
+declare -r KCYCLE_MAX_OUTER_ITER=2
+declare -r KCYCLE_MAX_INNER_ITER=5
+declare -r COARSE_SOLVER_TOL="5e-2"
+declare -r COARSE_SOLVER_MAX_OUTER_ITER=100
+declare -r COARSE_SOLVER_MAX_INNER_ITER=100
+declare -r OUTER_SOLVER_TOL="1e-12"
+declare -r OUTER_SOLVER_MAX_OUTER_ITER=100
+declare -r OUTER_SOLVER_MAX_INNER_ITER=20
+declare -r MASS="-0.25"
+declare -r CSW="1.0"

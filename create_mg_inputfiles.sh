@@ -3,42 +3,7 @@
 # Purpose: This file is intended to generate input files for the mg implementations in both grid and ddaamg
 # Author:  Daniel Richtmann
 
-# NOTE / TODO: All these declares here could be externalized to file that can be dotted
-declare -r CONFIG="/home/daniel/grid_gauge_config_hot.sequence_1.latt_size_8x8x8x8.seeds_1x2x3x4"
-
-# this gets filled for the coarser levels in a function below
-declare -ai A_GLATTSIZE_X=(8)
-declare -ai A_GLATTSIZE_Y=(8)
-declare -ai A_GLATTSIZE_Z=(8)
-declare -ai A_GLATTSIZE_T=(8)
-declare -ai A_LLATTSIZE_X=(8)
-declare -ai A_LLATTSIZE_Y=(8)
-declare -ai A_LLATTSIZE_Z=(8)
-declare -ai A_LLATTSIZE_T=(8)
-
-declare -ar A_BLOCKSIZE_X=(4 2 1)
-declare -ar A_BLOCKSIZE_Y=(4 2 2)
-declare -ar A_BLOCKSIZE_Z=(4 2 1)
-declare -ar A_BLOCKSIZE_T=(4 2 1)
-
-declare -ar A_SETUP_ITERS=(10 0 0)
-declare -ar A_SMOOTHER_TOL=("1e-14" "1e-14" "1e-14")
-declare -ar A_SMOOTHER_MAX_OUTER_ITER=(4 4 4)
-declare -ar A_SMOOTHER_MAX_INNER_ITER=(4 4 4)
-
-declare -r KCYCLE="false"
-declare -r KCYCLE_TOL="1e-1"
-declare -r KCYCLE_MAX_OUTER_ITER=2
-declare -r KCYCLE_MAX_INNER_ITER=5
-declare -r COARSE_SOLVER_TOL="5e-2"
-declare -r COARSE_SOLVER_MAX_OUTER_ITER=100
-declare -r COARSE_SOLVER_MAX_INNER_ITER=100
-declare -r OUTER_SOLVER_TOL="1e-12"
-declare -r OUTER_SOLVER_MAX_OUTER_ITER=100
-declare -r OUTER_SOLVER_MAX_INNER_ITER=20
-declare -r MASS="-0.25"
-declare -r CSW="1.0"
-
+declare -r CONFIG_FOLDER=~
 declare -ar A_CODEBASE=("grid" "ddaamg")
 declare -r TEMPLATE_DIR=~/code/mg_templates
 declare -r OUTPUT_DIR_BASE=/tmp/mg_input_files
@@ -47,10 +12,10 @@ function print_usage()
 {
     local text="
 USAGE:
-    $(basename "$0") <mg_levels>
+    $(basename "$0") <source_file>
 
 PARAMETERS (NECESSARY)
-    <mg_levels>    Number of MG levels
+    <source_file>    File to source
 "
 
     echo "$text" >> /dev/stderr
@@ -76,7 +41,11 @@ function main() {
         exit -1
     fi
 
-    declare -r NLEVELS=$1; shift
+    declare -r SOURCE_FILE=$1; shift
+
+    . $SOURCE_FILE
+
+    declare -r CONFIG=$CONFIG_FOLDER/grid_gauge_config_hot.sequence_1.latt_size_$A_GLATTSIZE_X[0]x$A_GLATTSIZE_Y[0]x$A_GLATTSIZE_Z[0]x$A_GLATTSIZE_T[0].seeds_1x2x3x4
 
     calculate_lattice_sizes
 
