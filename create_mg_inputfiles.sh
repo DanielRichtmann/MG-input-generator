@@ -45,7 +45,8 @@ function main() {
 
     . $SOURCE_FILE
 
-    declare -r CONFIG=$CONFIG_FOLDER/grid_gauge_config_hot.sequence_1.latt_size_$A_GLATTSIZE_X[0]x$A_GLATTSIZE_Y[0]x$A_GLATTSIZE_Z[0]x$A_GLATTSIZE_T[0].seeds_1x2x3x4
+    declare -r LATTSIZE=${A_GLATTSIZE_X[0]}x${A_GLATTSIZE_Y[0]}x${A_GLATTSIZE_Z[0]}x${A_GLATTSIZE_T[0]}
+    declare -r CONFIG=$CONFIG_FOLDER/grid_gauge_config_hot.sequence_1.latt_size_${LATTSIZE}.seeds_1x2x3x4
 
     calculate_lattice_sizes
 
