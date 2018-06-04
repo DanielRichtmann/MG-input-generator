@@ -70,6 +70,16 @@ function main() {
         mkdir -p $OUTPUT_DIR
         cp $TEMPLATE $OUTPUT_FILE
 
+        if [[ ${CODEBASE} == "ddaamg" ]]; then
+            if [[ ${KCYCLE} == "true" ]]; then
+                KCYCLE=1
+            elif [[ ${KCYCLE} == "false" ]]; then
+                KCYCLE=0
+            else
+                exit -1
+            fi
+        fi
+
         for(( lvl=0; lvl<$NLEVELS; lvl++ )); do
             sed -ri 's|%GLATTSIZE_'$lvl'_X%|'${A_GLATTSIZE_X[$lvl]}'|g' $OUTPUT_FILE
             sed -ri 's|%GLATTSIZE_'$lvl'_Y%|'${A_GLATTSIZE_Y[$lvl]}'|g' $OUTPUT_FILE

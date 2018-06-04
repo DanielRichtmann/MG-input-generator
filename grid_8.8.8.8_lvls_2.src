@@ -20,7 +20,7 @@ declare -ar A_SMOOTHER_TOL=("1e-14" "1e-14" "1e-14")
 declare -ar A_SMOOTHER_MAX_OUTER_ITER=(4 4 4)
 declare -ar A_SMOOTHER_MAX_INNER_ITER=(4 4 4)
 
-declare -r KCYCLE="false"
+declare    KCYCLE="false"
 declare -r KCYCLE_TOL="1e-1"
 declare -r KCYCLE_MAX_OUTER_ITER=2
 declare -r KCYCLE_MAX_INNER_ITER=5
