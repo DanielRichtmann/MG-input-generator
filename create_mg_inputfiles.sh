@@ -1,11 +1,13 @@
 #!/bin/bash -eu
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Purpose: This file is intended to generate input files for the mg implementations in both grid and ddaamg
 # Author:  Daniel Richtmann
 
 declare -r CONFIG_FOLDER=~
 declare -ar A_CODEBASE=("grid" "ddaamg")
-declare -r TEMPLATE_DIR=~/code/mg_templates
+declare -r TEMPLATE_DIR=$SCRIPT_DIR/templates
 declare -r OUTPUT_DIR_BASE=/tmp/mg_input_files
 
 function print_usage()
