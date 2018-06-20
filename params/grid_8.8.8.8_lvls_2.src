@@ -10,15 +10,15 @@ declare -ai A_LLATTSIZE_Y=(8)
 declare -ai A_LLATTSIZE_Z=(8)
 declare -ai A_LLATTSIZE_T=(8)
 
-declare -ar A_BLOCKSIZE_X=(4 2 1)
-declare -ar A_BLOCKSIZE_Y=(4 2 2)
-declare -ar A_BLOCKSIZE_Z=(4 2 1)
-declare -ar A_BLOCKSIZE_T=(4 2 1)
+declare -ar A_BLOCKSIZE_X=(4)
+declare -ar A_BLOCKSIZE_Y=(4)
+declare -ar A_BLOCKSIZE_Z=(4)
+declare -ar A_BLOCKSIZE_T=(4)
 
-declare -ar A_SETUP_ITERS=(0 0 0)
-declare -ar A_SMOOTHER_TOL=("1e-14" "1e-14" "1e-14")
-declare -ar A_SMOOTHER_MAX_OUTER_ITER=(2 2 2) # this corresponds to the number of post smoothing SAP steps ν (Matthias' nomenclature)
-declare -ar A_SMOOTHER_MAX_INNER_ITER=(4 4 4) # this is the number of MR iterations to solve the local systems in SAP (Matthias' nomenclature)
+declare -ar A_SETUP_ITERS=(0)
+declare -ar A_SMOOTHER_TOL=("1e-14")
+declare -ar A_SMOOTHER_MAX_OUTER_ITER=(2) # this corresponds to the number of post smoothing SAP steps ν (Matthias' nomenclature)
+declare -ar A_SMOOTHER_MAX_INNER_ITER=(4) # this is the number of MR iterations to solve the local systems in SAP (Matthias' nomenclature)
 
 declare    KCYCLE="false"
 declare -r KCYCLE_TOL="1e-1"
