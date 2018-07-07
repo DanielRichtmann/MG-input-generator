@@ -8,7 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 declare -r CONFIG_FOLDER=~
 declare -ar A_CODEBASE=("grid" "ddaamg")
 declare -r TEMPLATE_DIR=$SCRIPT_DIR/templates
-declare -r OUTPUT_DIR_BASE=/tmp/mg_input_files
+declare -r OUTPUT_DIR_BASE=$SCRIPT_DIR/output
 
 function print_usage()
 {
