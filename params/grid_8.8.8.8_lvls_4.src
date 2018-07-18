@@ -10,10 +10,10 @@ declare -ai A_LLATTSIZE_Y=(8)
 declare -ai A_LLATTSIZE_Z=(8)
 declare -ai A_LLATTSIZE_T=(8)
 
-declare -ar A_BLOCKSIZE_X=(4 2 1) # optimal values according to Matthias thesis: 4 2 2
+declare -ar A_BLOCKSIZE_X=(4 2 2) # optimal values according to Matthias thesis: 4 2 2
 declare -ar A_BLOCKSIZE_Y=(4 2 2) #                                              4 2 2
-declare -ar A_BLOCKSIZE_Z=(4 2 1) #                                              4 2 2
-declare -ar A_BLOCKSIZE_T=(4 2 1) #                                              4 2 2
+declare -ar A_BLOCKSIZE_Z=(4 2 2) #                                              4 2 2
+declare -ar A_BLOCKSIZE_T=(4 2 2) #                                              4 2 2
 
 declare -ar A_SETUP_ITERS=(0 0 0) # optimal values according to Matthias thesis: 6 2 2
 declare -ar A_SMOOTHER_TOL=("1e-14" "1e-14" "1e-14")
