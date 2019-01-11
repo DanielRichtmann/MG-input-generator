@@ -14,10 +14,10 @@ function print_usage()
 {
     local -r text="
 USAGE:
-    $(basename "$0") <source_file>
+    $(basename "$0") <params_file>
 
 PARAMETERS (NECESSARY)
-    <source_file>    File to source
+    <params_file>    Parameter file to source
 "
 
     echo "$text" >> /dev/stderr
@@ -42,9 +42,9 @@ function create_mg_inputfiles() {
         return 1
     fi
 
-    local -r source_file=$1; shift
+    local -r params_file=$1; shift
 
-    . $source_file
+    . $params_file
 
     local -r lattsize=${a_glattsize_x[0]}x${a_glattsize_y[0]}x${a_glattsize_z[0]}x${a_glattsize_t[0]}
     local -r config=$config_folder/grid_gauge_config_hot.sequence_1.latt_size_${lattsize}.seeds_1x2x3x4
