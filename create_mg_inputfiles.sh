@@ -36,8 +36,7 @@ function calculate_lattice_sizes() {
     done
 }
 
-function main() {
-
+function create_mg_inputfiles() {
     if [[ $# != 1 ]]; then
         print_usage
         exit -1
@@ -121,4 +120,4 @@ function main() {
     done
 }
 
-main "$@"
+create_mg_inputfiles "$@"
