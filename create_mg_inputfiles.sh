@@ -24,7 +24,7 @@ PARAMETERS (NECESSARY)
 }
 
 function calculate_lattice_sizes() {
-    for(( lvl=1; lvl<$nlevels; lvl++)); do
+    for (( lvl=1; lvl<$nlevels; lvl++ )); do
         a_glattsize_x[$lvl]=$((a_glattsize_x[$((lvl-1))] / a_blocksize_x[$((lvl-1))]))
         a_glattsize_y[$lvl]=$((a_glattsize_y[$((lvl-1))] / a_blocksize_y[$((lvl-1))]))
         a_glattsize_z[$lvl]=$((a_glattsize_z[$((lvl-1))] / a_blocksize_z[$((lvl-1))]))
@@ -81,7 +81,7 @@ function create_mg_inputfiles() {
             fi
         fi
 
-        for(( lvl=0; lvl<$nlevels; lvl++ )); do
+        for (( lvl=0; lvl<$nlevels; lvl++ )); do
             sed -ri 's|%GLATTSIZE_'$lvl'_X%|'${a_glattsize_x[$lvl]}'|g' $output_file
             sed -ri 's|%GLATTSIZE_'$lvl'_Y%|'${a_glattsize_y[$lvl]}'|g' $output_file
             sed -ri 's|%GLATTSIZE_'$lvl'_Z%|'${a_glattsize_z[$lvl]}'|g' $output_file
@@ -91,7 +91,7 @@ function create_mg_inputfiles() {
             sed -ri 's|%LLATTSIZE_'$lvl'_Z%|'${a_llattsize_z[$lvl]}'|g' $output_file
             sed -ri 's|%LLATTSIZE_'$lvl'_T%|'${a_llattsize_t[$lvl]}'|g' $output_file
         done
-        for(( lvl=0; lvl<$((nlevels - 1)); lvl++ )); do
+        for (( lvl=0; lvl<$((nlevels - 1)); lvl++ )); do
             sed -ri 's|%BLOCKSIZE_'$lvl'_X%|'${a_blocksize_x[$lvl]}'|g' $output_file
             sed -ri 's|%BLOCKSIZE_'$lvl'_Y%|'${a_blocksize_y[$lvl]}'|g' $output_file
             sed -ri 's|%BLOCKSIZE_'$lvl'_Z%|'${a_blocksize_z[$lvl]}'|g' $output_file
