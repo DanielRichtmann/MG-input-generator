@@ -5,7 +5,6 @@
 
 # Define some paths
 declare -r script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-echo $script_dir
 declare -r config_dir=~/configs
 declare -r template_dir=$script_dir/templates
 declare -r params_dir=$script_dir/params
