@@ -24,7 +24,7 @@ PARAMETERS (NECESSARY)
 }
 
 function calculate_lattice_sizes() {
-    for (( lvl=1; lvl<$nlevels; lvl++ )); do
+    for (( lvl=1; lvl<nlevels; lvl++ )); do
         a_glattsize_x[$lvl]=$((a_glattsize_x[$((lvl-1))] / a_blocksize_x[$((lvl-1))]))
         a_glattsize_y[$lvl]=$((a_glattsize_y[$((lvl-1))] / a_blocksize_y[$((lvl-1))]))
         a_glattsize_z[$lvl]=$((a_glattsize_z[$((lvl-1))] / a_blocksize_z[$((lvl-1))]))
@@ -44,7 +44,7 @@ function create_mg_inputfiles() {
 
     local -r params_file=$1; shift
 
-    . $params_file
+    . "$params_file"
 
     local -r lattsize=${a_glattsize_x[0]}x${a_glattsize_y[0]}x${a_glattsize_z[0]}x${a_glattsize_t[0]}
     local -r config=$config_folder/grid_gauge_config_hot.sequence_1.latt_size_${lattsize}.seeds_1x2x3x4
@@ -68,8 +68,8 @@ function create_mg_inputfiles() {
         local output_dir=$output_dir_base/$codebase
         local output_file=$output_dir/mg_params.${nlevels}lvl.$file_extension
 
-        mkdir -p $output_dir
-        cp $template $output_file
+        mkdir -p "$output_dir"
+        cp "$template" "$output_file"
 
         if [[ ${codebase} == "ddaamg" ]]; then
             if [[ ${kcycle} == "true" ]]; then
@@ -81,40 +81,40 @@ function create_mg_inputfiles() {
             fi
         fi
 
-        for (( lvl=0; lvl<$nlevels; lvl++ )); do
-            sed -ri 's|%GLATTSIZE_'$lvl'_X%|'${a_glattsize_x[$lvl]}'|g' $output_file
-            sed -ri 's|%GLATTSIZE_'$lvl'_Y%|'${a_glattsize_y[$lvl]}'|g' $output_file
-            sed -ri 's|%GLATTSIZE_'$lvl'_Z%|'${a_glattsize_z[$lvl]}'|g' $output_file
-            sed -ri 's|%GLATTSIZE_'$lvl'_T%|'${a_glattsize_t[$lvl]}'|g' $output_file
-            sed -ri 's|%LLATTSIZE_'$lvl'_X%|'${a_llattsize_x[$lvl]}'|g' $output_file
-            sed -ri 's|%LLATTSIZE_'$lvl'_Y%|'${a_llattsize_y[$lvl]}'|g' $output_file
-            sed -ri 's|%LLATTSIZE_'$lvl'_Z%|'${a_llattsize_z[$lvl]}'|g' $output_file
-            sed -ri 's|%LLATTSIZE_'$lvl'_T%|'${a_llattsize_t[$lvl]}'|g' $output_file
+        for (( lvl=0; lvl<nlevels; lvl++ )); do
+            sed -ri 's|%GLATTSIZE_'"$lvl"'_X%|'"${a_glattsize_x[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%GLATTSIZE_'"$lvl"'_Y%|'"${a_glattsize_y[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%GLATTSIZE_'"$lvl"'_Z%|'"${a_glattsize_z[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%GLATTSIZE_'"$lvl"'_T%|'"${a_glattsize_t[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%LLATTSIZE_'"$lvl"'_X%|'"${a_llattsize_x[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%LLATTSIZE_'"$lvl"'_Y%|'"${a_llattsize_y[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%LLATTSIZE_'"$lvl"'_Z%|'"${a_llattsize_z[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%LLATTSIZE_'"$lvl"'_T%|'"${a_llattsize_t[$lvl]}"'|g' "$output_file"
         done
         for (( lvl=0; lvl<$((nlevels - 1)); lvl++ )); do
-            sed -ri 's|%BLOCKSIZE_'$lvl'_X%|'${a_blocksize_x[$lvl]}'|g' $output_file
-            sed -ri 's|%BLOCKSIZE_'$lvl'_Y%|'${a_blocksize_y[$lvl]}'|g' $output_file
-            sed -ri 's|%BLOCKSIZE_'$lvl'_Z%|'${a_blocksize_z[$lvl]}'|g' $output_file
-            sed -ri 's|%BLOCKSIZE_'$lvl'_T%|'${a_blocksize_t[$lvl]}'|g' $output_file
-            sed -ri 's|%SETUP_ITERS_'$lvl'%|'${a_setup_iters[$lvl]}'|g' $output_file
-            sed -ri 's|%SMOOTHER_TOL_'$lvl'%|'${a_smoother_tol[$lvl]}'|g' $output_file
-            sed -ri 's|%SMOOTHER_MAX_OUTER_ITER_'$lvl'%|'${a_smoother_max_outer_iter[$lvl]}'|g' $output_file
-            sed -ri 's|%SMOOTHER_MAX_INNER_ITER_'$lvl'%|'${a_smoother_max_inner_iter[$lvl]}'|g' $output_file
+            sed -ri 's|%BLOCKSIZE_'"$lvl"'_X%|'"${a_blocksize_x[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%BLOCKSIZE_'"$lvl"'_Y%|'"${a_blocksize_y[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%BLOCKSIZE_'"$lvl"'_Z%|'"${a_blocksize_z[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%BLOCKSIZE_'"$lvl"'_T%|'"${a_blocksize_t[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%SETUP_ITERS_'"$lvl"'%|'"${a_setup_iters[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%SMOOTHER_TOL_'"$lvl"'%|'"${a_smoother_tol[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%SMOOTHER_MAX_OUTER_ITER_'"$lvl"'%|'"${a_smoother_max_outer_iter[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%SMOOTHER_MAX_INNER_ITER_'"$lvl"'%|'"${a_smoother_max_inner_iter[$lvl]}"'|g' "$output_file"
         done
 
-        sed -ri 's|%KCYCLE%|'${kcycle}'|g' $output_file
-        sed -ri 's|%KCYCLE_TOL%|'${kcycle_tol}'|g' $output_file
-        sed -ri 's|%KCYCLE_MAX_OUTER_ITER%|'${kcycle_max_outer_iter}'|g' $output_file
-        sed -ri 's|%KCYCLE_MAX_INNER_ITER%|'${kcycle_max_inner_iter}'|g' $output_file
-        sed -ri 's|%COARSE_SOLVER_TOL%|'${coarse_solver_tol}'|g' $output_file
-        sed -ri 's|%COARSE_SOLVER_MAX_OUTER_ITER%|'${coarse_solver_max_outer_iter}'|g' $output_file
-        sed -ri 's|%COARSE_SOLVER_MAX_INNER_ITER%|'${coarse_solver_max_inner_iter}'|g' $output_file
-        sed -ri 's|%OUTER_SOLVER_TOL%|'${outer_solver_tol}'|g' $output_file
-        sed -ri 's|%OUTER_SOLVER_MAX_OUTER_ITER%|'${outer_solver_max_outer_iter}'|g' $output_file
-        sed -ri 's|%OUTER_SOLVER_MAX_INNER_ITER%|'${outer_solver_max_inner_iter}'|g' $output_file
-        sed -ri 's|%MASS%|'${mass}'|g' $output_file
-        sed -ri 's|%CSW%|'${csw}'|g' $output_file
-        sed -ri 's|%CONFIG%|'${config}'|g' $output_file
+        sed -ri 's|%KCYCLE%|'"${kcycle}"'|g' "$output_file"
+        sed -ri 's|%KCYCLE_TOL%|'"${kcycle_tol}"'|g' "$output_file"
+        sed -ri 's|%KCYCLE_MAX_OUTER_ITER%|'"${kcycle_max_outer_iter}"'|g' "$output_file"
+        sed -ri 's|%KCYCLE_MAX_INNER_ITER%|'"${kcycle_max_inner_iter}"'|g' "$output_file"
+        sed -ri 's|%COARSE_SOLVER_TOL%|'"${coarse_solver_tol}"'|g' "$output_file"
+        sed -ri 's|%COARSE_SOLVER_MAX_OUTER_ITER%|'"${coarse_solver_max_outer_iter}"'|g' "$output_file"
+        sed -ri 's|%COARSE_SOLVER_MAX_INNER_ITER%|'"${coarse_solver_max_inner_iter}"'|g' "$output_file"
+        sed -ri 's|%OUTER_SOLVER_TOL%|'"${outer_solver_tol}"'|g' "$output_file"
+        sed -ri 's|%OUTER_SOLVER_MAX_OUTER_ITER%|'"${outer_solver_max_outer_iter}"'|g' "$output_file"
+        sed -ri 's|%OUTER_SOLVER_MAX_INNER_ITER%|'"${outer_solver_max_inner_iter}"'|g' "$output_file"
+        sed -ri 's|%MASS%|'"${mass}"'|g' "$output_file"
+        sed -ri 's|%CSW%|'"${csw}"'|g' "$output_file"
+        sed -ri 's|%CONFIG%|'"${config}"'|g' "$output_file"
 
         echo "Done with file $output_file"
     done
