@@ -39,7 +39,7 @@ function calculate_lattice_sizes() {
 function create_mg_inputfiles() {
     if [[ $# != 1 ]]; then
         print_usage
-        exit -1
+        return 1
     fi
 
     declare -r source_file=$1; shift
@@ -60,7 +60,7 @@ function create_mg_inputfiles() {
                 file_extension="ini"
                 ;;
             *)
-                exit -1
+                return 1
                 ;;
         esac
 
@@ -77,7 +77,7 @@ function create_mg_inputfiles() {
             elif [[ ${kcycle} == "false" ]]; then
                 kcycle=0
             else
-                exit -1
+                return 1
             fi
         fi
 
