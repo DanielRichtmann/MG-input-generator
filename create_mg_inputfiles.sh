@@ -25,14 +25,14 @@ PARAMETERS (NECESSARY)
 
 function calculate_lattice_sizes() {
     for (( lvl=1; lvl<nlevels; lvl++ )); do
-        a_glattsize_x[$lvl]=$((a_glattsize_x[$((lvl-1))] / a_blocksize_x[$((lvl-1))]))
-        a_glattsize_y[$lvl]=$((a_glattsize_y[$((lvl-1))] / a_blocksize_y[$((lvl-1))]))
-        a_glattsize_z[$lvl]=$((a_glattsize_z[$((lvl-1))] / a_blocksize_z[$((lvl-1))]))
-        a_glattsize_t[$lvl]=$((a_glattsize_t[$((lvl-1))] / a_blocksize_t[$((lvl-1))]))
-        a_llattsize_x[$lvl]=${a_glattsize_x[$lvl]}
-        a_llattsize_y[$lvl]=${a_glattsize_y[$lvl]}
-        a_llattsize_z[$lvl]=${a_glattsize_z[$lvl]}
-        a_llattsize_t[$lvl]=${a_glattsize_t[$lvl]}
+        a_global_lattsize_x[$lvl]=$((a_global_lattsize_x[$((lvl-1))] / a_blocksize_x[$((lvl-1))]))
+        a_global_lattsize_y[$lvl]=$((a_global_lattsize_y[$((lvl-1))] / a_blocksize_y[$((lvl-1))]))
+        a_global_lattsize_z[$lvl]=$((a_global_lattsize_z[$((lvl-1))] / a_blocksize_z[$((lvl-1))]))
+        a_global_lattsize_t[$lvl]=$((a_global_lattsize_t[$((lvl-1))] / a_blocksize_t[$((lvl-1))]))
+        a_local_lattsize_x[$lvl]=${a_global_lattsize_x[$lvl]}
+        a_local_lattsize_y[$lvl]=${a_global_lattsize_y[$lvl]}
+        a_local_lattsize_z[$lvl]=${a_global_lattsize_z[$lvl]}
+        a_local_lattsize_t[$lvl]=${a_global_lattsize_t[$lvl]}
     done
 }
 
@@ -46,7 +46,7 @@ function create_mg_inputfiles() {
 
     . "$params_file"
 
-    local -r lattsize=${a_glattsize_x[0]}x${a_glattsize_y[0]}x${a_glattsize_z[0]}x${a_glattsize_t[0]}
+    local -r lattsize=${a_global_lattsize_x[0]}x${a_global_lattsize_y[0]}x${a_global_lattsize_z[0]}x${a_global_lattsize_t[0]}
     local -r config=$config_folder/grid_gauge_config_hot.sequence_1.latt_size_${lattsize}.seeds_1x2x3x4
 
     calculate_lattice_sizes
@@ -82,14 +82,14 @@ function create_mg_inputfiles() {
         fi
 
         for (( lvl=0; lvl<nlevels; lvl++ )); do
-            sed -ri 's|%GLATTSIZE_'"$lvl"'_X%|'"${a_glattsize_x[$lvl]}"'|g' "$output_file"
-            sed -ri 's|%GLATTSIZE_'"$lvl"'_Y%|'"${a_glattsize_y[$lvl]}"'|g' "$output_file"
-            sed -ri 's|%GLATTSIZE_'"$lvl"'_Z%|'"${a_glattsize_z[$lvl]}"'|g' "$output_file"
-            sed -ri 's|%GLATTSIZE_'"$lvl"'_T%|'"${a_glattsize_t[$lvl]}"'|g' "$output_file"
-            sed -ri 's|%LLATTSIZE_'"$lvl"'_X%|'"${a_llattsize_x[$lvl]}"'|g' "$output_file"
-            sed -ri 's|%LLATTSIZE_'"$lvl"'_Y%|'"${a_llattsize_y[$lvl]}"'|g' "$output_file"
-            sed -ri 's|%LLATTSIZE_'"$lvl"'_Z%|'"${a_llattsize_z[$lvl]}"'|g' "$output_file"
-            sed -ri 's|%LLATTSIZE_'"$lvl"'_T%|'"${a_llattsize_t[$lvl]}"'|g' "$output_file"
+            sed -ri 's|%GLOBAL_LATTSIZE_'"$lvl"'_X%|'"${a_global_lattsize_x[$lvl]}"'|g' " $output_file"
+            sed -ri 's|%GLOBAL_LATTSIZE_'"$lvl"'_Y%|'"${a_global_lattsize_y[$lvl]}"'|g' " $output_file"
+            sed -ri 's|%GLOBAL_LATTSIZE_'"$lvl"'_Z%|'"${a_global_lattsize_z[$lvl]}"'|g' " $output_file"
+            sed -ri 's|%GLOBAL_LATTSIZE_'"$lvl"'_T%|'"${a_global_lattsize_t[$lvl]}"'|g' " $output_file"
+            sed -ri 's|%LOCAL_LATTSIZE_'"$lvl"'_X%|'"${a_local_lattsize_x[$lvl]}"'|g' "   $output_file"
+            sed -ri 's|%LOCAL_LATTSIZE_'"$lvl"'_Y%|'"${a_local_lattsize_y[$lvl]}"'|g' "   $output_file"
+            sed -ri 's|%LOCAL_LATTSIZE_'"$lvl"'_Z%|'"${a_local_lattsize_z[$lvl]}"'|g' "   $output_file"
+            sed -ri 's|%LOCAL_LATTSIZE_'"$lvl"'_T%|'"${a_local_lattsize_t[$lvl]}"'|g' "   $output_file"
         done
         for (( lvl=0; lvl<$((nlevels - 1)); lvl++ )); do
             sed -ri 's|%BLOCKSIZE_'"$lvl"'_X%|'"${a_blocksize_x[$lvl]}"'|g' "                         $output_file"
