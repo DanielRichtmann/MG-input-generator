@@ -1,21 +1,9 @@
-declare -r nlevels=2
+declare -ar a_blocksize_x=(4) # optimal values according to Matthias thesis: 4 2 2
+declare -ar a_blocksize_y=(4) #                                              4 2 2
+declare -ar a_blocksize_z=(4) #                                              4 2 2
+declare -ar a_blocksize_t=(4) #                                              4 2 2
 
-# the values of this paragraph for the coarser levels get filled in by the script
-declare -ai a_global_lattsize_x=(8)
-declare -ai a_global_lattsize_y=(8)
-declare -ai a_global_lattsize_z=(8)
-declare -ai a_global_lattsize_t=(8)
-declare -ai a_local_lattsize_x=(8)
-declare -ai a_local_lattsize_y=(8)
-declare -ai a_local_lattsize_z=(8)
-declare -ai a_local_lattsize_t=(8)
-
-declare -ar a_blocksize_x=(4)
-declare -ar a_blocksize_y=(4)
-declare -ar a_blocksize_z=(4)
-declare -ar a_blocksize_t=(4)
-
-declare -ar a_setup_iters=(0)
+declare -ar a_setup_iters=(0) # optimal values according to Matthias: 6 2 2
 declare -ar a_smoother_tol=("1e-14")
 declare -ar a_smoother_max_outer_iter=(2) # this corresponds to the number of post smoothing SAP steps ν (Matthias' nomenclature)
 declare -ar a_smoother_max_inner_iter=(4) # this is the number of MR iterations to solve the local systems in SAP (Matthias' nomenclature)
