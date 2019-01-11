@@ -12,6 +12,7 @@ declare -r output_dir_base=$script_dir/output
 
 # Define some global variables
 declare -ar a_codebase=("grid" "ddaamg")
+declare -Ar a_file_extension=(["grid"]=xml ["ddaamg"]=ini)
 declare -ai a_global_lattsize_x=()
 declare -ai a_global_lattsize_y=()
 declare -ai a_global_lattsize_z=()
@@ -140,25 +141,6 @@ function create_mg_inputfiles() {
     calculate_lattice_sizes
 
     for codebase in "${a_codebase[@]}"; do
-        case $codebase in
-            "grid")
-                local file_extension="xml"
-                ;;
-            "ddaamg")
-                local file_extension="ini"
-                ;;
-            *)
-                return 1
-                ;;
-        esac
-
-        local template=$template_dir/$codebase/${n_levels}_lvls.$file_extension
-        local output_dir=$output_dir_base/$codebase
-        local output_file=$output_dir/mg_params.${n_levels}_lvls.$file_extension
-
-        mkdir -p "$output_dir"
-        cp "$template" "$output_file"
-
         if [[ ${codebase} == "ddaamg" ]]; then
             if [[ ${kcycle} == "true" ]]; then
                 kcycle=1
@@ -168,6 +150,13 @@ function create_mg_inputfiles() {
                 return 1
             fi
         fi
+
+        local template=$template_dir/$codebase/${n_levels}_lvls.${a_file_extension[$codebase]}
+        local output_dir=$output_dir_base/$codebase
+        local output_file=$output_dir/mg_params.${n_levels}_lvls.${a_file_extension[$codebase]}
+
+        mkdir -p "$output_dir"
+        cp "$template" "$output_file"
 
         replace_parameters_in_file "$output_file"
 
