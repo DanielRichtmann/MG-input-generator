@@ -12,7 +12,7 @@ declare -r output_dir_base=$script_dir/output
 
 function print_usage()
 {
-    local text="
+    local -r text="
 USAGE:
     $(basename "$0") <source_file>
 
@@ -42,31 +42,31 @@ function create_mg_inputfiles() {
         return 1
     fi
 
-    declare -r source_file=$1; shift
+    local -r source_file=$1; shift
 
     . $source_file
 
-    declare -r lattsize=${a_glattsize_x[0]}x${a_glattsize_y[0]}x${a_glattsize_z[0]}x${a_glattsize_t[0]}
-    declare -r config=$config_folder/grid_gauge_config_hot.sequence_1.latt_size_${lattsize}.seeds_1x2x3x4
+    local -r lattsize=${a_glattsize_x[0]}x${a_glattsize_y[0]}x${a_glattsize_z[0]}x${a_glattsize_t[0]}
+    local -r config=$config_folder/grid_gauge_config_hot.sequence_1.latt_size_${lattsize}.seeds_1x2x3x4
 
     calculate_lattice_sizes
 
     for codebase in "${a_codebase[@]}"; do
         case $codebase in
             "grid")
-                file_extension="xml"
+                local file_extension="xml"
                 ;;
             "ddaamg")
-                file_extension="ini"
+                local file_extension="ini"
                 ;;
             *)
                 return 1
                 ;;
         esac
 
-        declare template=$template_dir/$codebase/mg_params_template.${nlevels}lvl.$file_extension
-        declare output_dir=$output_dir_base/$codebase
-        declare output_file=$output_dir/mg_params.${nlevels}lvl.$file_extension
+        local template=$template_dir/$codebase/mg_params_template.${nlevels}lvl.$file_extension
+        local output_dir=$output_dir_base/$codebase
+        local output_file=$output_dir/mg_params.${nlevels}lvl.$file_extension
 
         mkdir -p $output_dir
         cp $template $output_file
