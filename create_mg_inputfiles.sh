@@ -10,8 +10,7 @@ declare -ar a_codebase=("grid" "ddaamg")
 declare -r template_dir=$script_dir/templates
 declare -r output_dir_base=$script_dir/output
 
-function print_usage()
-{
+function print_usage() {
     local -r text="
 USAGE:
     $(basename "$0") <params_file>
@@ -29,6 +28,7 @@ function calculate_lattice_sizes() {
         a_global_lattsize_y[$lvl]=$((a_global_lattsize_y[$((lvl-1))] / a_blocksize_y[$((lvl-1))]))
         a_global_lattsize_z[$lvl]=$((a_global_lattsize_z[$((lvl-1))] / a_blocksize_z[$((lvl-1))]))
         a_global_lattsize_t[$lvl]=$((a_global_lattsize_t[$((lvl-1))] / a_blocksize_t[$((lvl-1))]))
+
         a_local_lattsize_x[$lvl]=${a_global_lattsize_x[$lvl]}
         a_local_lattsize_y[$lvl]=${a_global_lattsize_y[$lvl]}
         a_local_lattsize_z[$lvl]=${a_global_lattsize_z[$lvl]}
@@ -86,6 +86,7 @@ function create_mg_inputfiles() {
             sed -ri 's|%GLOBAL_LATTSIZE_'"$lvl"'_Y%|'"${a_global_lattsize_y[$lvl]}"'|g' " $output_file"
             sed -ri 's|%GLOBAL_LATTSIZE_'"$lvl"'_Z%|'"${a_global_lattsize_z[$lvl]}"'|g' " $output_file"
             sed -ri 's|%GLOBAL_LATTSIZE_'"$lvl"'_T%|'"${a_global_lattsize_t[$lvl]}"'|g' " $output_file"
+
             sed -ri 's|%LOCAL_LATTSIZE_'"$lvl"'_X%|'"${a_local_lattsize_x[$lvl]}"'|g' "   $output_file"
             sed -ri 's|%LOCAL_LATTSIZE_'"$lvl"'_Y%|'"${a_local_lattsize_y[$lvl]}"'|g' "   $output_file"
             sed -ri 's|%LOCAL_LATTSIZE_'"$lvl"'_Z%|'"${a_local_lattsize_z[$lvl]}"'|g' "   $output_file"
@@ -96,6 +97,7 @@ function create_mg_inputfiles() {
             sed -ri 's|%BLOCKSIZE_'"$lvl"'_Y%|'"${a_blocksize_y[$lvl]}"'|g' "                         $output_file"
             sed -ri 's|%BLOCKSIZE_'"$lvl"'_Z%|'"${a_blocksize_z[$lvl]}"'|g' "                         $output_file"
             sed -ri 's|%BLOCKSIZE_'"$lvl"'_T%|'"${a_blocksize_t[$lvl]}"'|g' "                         $output_file"
+
             sed -ri 's|%SETUP_ITERS_'"$lvl"'%|'"${a_setup_iters[$lvl]}"'|g' "                         $output_file"
             sed -ri 's|%SMOOTHER_TOL_'"$lvl"'%|'"${a_smoother_tol[$lvl]}"'|g' "                       $output_file"
             sed -ri 's|%SMOOTHER_MAX_OUTER_ITER_'"$lvl"'%|'"${a_smoother_max_outer_iter[$lvl]}"'|g' " $output_file"
