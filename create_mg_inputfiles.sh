@@ -1,9 +1,9 @@
 #!/bin/bash -eu
 
-declare -r script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 # Purpose: This file is intended to generate input files for the mg implementations in both grid and ddaamg
 # Author:  Daniel Richtmann
+
+declare -r script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 declare -r config_folder=~
 declare -ar a_codebase=("grid" "ddaamg")
