@@ -104,6 +104,7 @@ function replace_parameters_in_file() {
     sed -ri 's|%MASS%|'"${mass}"'|g'                                                  "$output_file"
     sed -ri 's|%CSW%|'"${csw}"'|g'                                                    "$output_file"
     sed -ri 's|%CONFIG%|'"${config}"'|g'                                              "$output_file"
+    sed -ri 's|%SOURCE_TYPE%|'"${source_type}"'|g'                                    "$output_file"
 }
 
 function create_mg_inputfiles() {
