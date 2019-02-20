@@ -64,7 +64,7 @@ function replace_parameters_in_file() {
     local -r output_file="$1"; shift
 
     if [[ ! -w "$output_file" ]]; then
-        echo "${FUNCNAME[0]}: output file \"output_file\" not present or not writable" >> /dev/stderr
+        echo "${FUNCNAME[0]}: output file \"$output_file\" not present or not writable" >> /dev/stderr
         return 1
     fi
 
