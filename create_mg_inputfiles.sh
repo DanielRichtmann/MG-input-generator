@@ -41,6 +41,15 @@ PARAMETERS (NECESSARY)
     echo "$text" >> /dev/stderr
 }
 
+function convert_to_int() {
+    local -r boolean="$1"; shift
+    if [[ "$boolean" == true ]] ; then
+        echo 1
+    else
+        echo 0
+    fi
+}
+
 function calculate_lattice_sizes() {
     a_local_lattsize_x[0]=$((a_global_lattsize_x[0] / mpi_decomposition_x))
     a_local_lattsize_y[0]=$((a_global_lattsize_y[0] / mpi_decomposition_y))
@@ -62,6 +71,7 @@ function calculate_lattice_sizes() {
 
 function replace_parameters_in_file() {
     local -r output_file="$1"; shift
+    local -r codebase="$1"; shift
 
     if [[ ! -w "$output_file" ]]; then
         echo "${FUNCNAME[0]}: output file \"$output_file\" not present or not writable" >> /dev/stderr
@@ -91,7 +101,15 @@ function replace_parameters_in_file() {
         sed -ri 's|%SMOOTHER_MAX_INNER_ITER_'"$lvl"'%|'"${a_smoother_max_inner_iter[$lvl]}"'|g' "$output_file"
     done
 
-    sed -ri 's|%KCYCLE%|'"${kcycle}"'|g'                                              "$output_file"
+    if [[ ${codebase} == "grid" ]]; then
+        sed -ri 's|%KCYCLE%|'"${kcycle}"'|g'                                                           "$output_file"
+    elif [[ ${codebase} == "ddaamg" ]]; then
+        sed -ri 's|%KCYCLE%|'"$(convert_to_int ${kcycle})"'|g'                                         "$output_file"
+    else
+        echo "${FUNCNAME[0]}: codebase \"$codebase\" not element of {${a_codebase[@]}}" >> /dev/stderr
+        exit 1
+    fi
+
     sed -ri 's|%KCYCLE_TOL%|'"${kcycle_tol}"'|g'                                      "$output_file"
     sed -ri 's|%KCYCLE_MAX_OUTER_ITER%|'"${kcycle_max_outer_iter}"'|g'                "$output_file"
     sed -ri 's|%KCYCLE_MAX_INNER_ITER%|'"${kcycle_max_inner_iter}"'|g'                "$output_file"
@@ -142,16 +160,6 @@ function create_mg_inputfiles() {
     calculate_lattice_sizes
 
     for codebase in "${a_codebase[@]}"; do
-        if [[ ${codebase} == "ddaamg" ]]; then
-            if [[ ${kcycle} == "true" ]]; then
-                kcycle=1
-            elif [[ ${kcycle} == "false" ]]; then
-                kcycle=0
-            else
-                return 1
-            fi
-        fi
-
         local template=$template_dir/$codebase/${n_levels}_lvls.${a_file_extension[$codebase]}
         local output_dir=$output_dir_base/$codebase
         local output_file=$output_dir/mg_params.${n_levels}_lvls.${a_file_extension[$codebase]}
@@ -159,7 +167,7 @@ function create_mg_inputfiles() {
         mkdir -p "$output_dir"
         cp "$template" "$output_file"
 
-        replace_parameters_in_file "$output_file"
+        replace_parameters_in_file "$output_file" "$codebase"
 
         echo "Done with file $output_file"
     done
