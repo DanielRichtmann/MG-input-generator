@@ -21,6 +21,7 @@
         <elem>%SETUP_ITERS_0%</elem>
         <elem>%SETUP_ITERS_1%</elem>
       </setupIter>
+      <startSubspaceFromRandom>%START_SUBSPACE_FROM_RANDOM%</startSubspaceFromRandom>
       <smootherTol>
         <elem>%SMOOTHER_TOL_0%</elem>
         <elem>%SMOOTHER_TOL_1%</elem>
