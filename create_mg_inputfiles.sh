@@ -102,8 +102,10 @@ function replace_parameters_in_file() {
     done
 
     if [[ ${codebase} == "grid" ]]; then
+        sed -ri 's|%USE_ANTIPERIODIC_BC%|'"${use_antiperiodic_bc}"'|g'                                 "$output_file"
         sed -ri 's|%KCYCLE%|'"${kcycle}"'|g'                                                           "$output_file"
     elif [[ ${codebase} == "ddaamg" ]]; then
+        sed -ri 's|%USE_ANTIPERIODIC_BC%|'"$(convert_to_int ${use_antiperiodic_bc})"'|g'               "$output_file"
         sed -ri 's|%KCYCLE%|'"$(convert_to_int ${kcycle})"'|g'                                         "$output_file"
     else
         echo "${FUNCNAME[0]}: codebase \"$codebase\" not element of {${a_codebase[@]}}" >> /dev/stderr

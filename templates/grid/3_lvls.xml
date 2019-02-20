@@ -58,6 +58,7 @@
       <csw>%CSW%</csw>
       <config>%CONFIG%</config>
       <sourceType>%SOURCE_TYPE%</sourceType>
+      <useAntiPeriodicBC>%USE_ANTIPERIODIC_BC%</useAntiPeriodicBC>
     </test>
   </Params>
 </grid>
