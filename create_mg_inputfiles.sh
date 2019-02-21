@@ -126,6 +126,21 @@ function replace_parameters_in_file() {
     sed -ri 's|%MASS%|'"${mass}"'|g'                                                  "$output_file"
     sed -ri 's|%CSW%|'"${csw}"'|g'                                                    "$output_file"
     sed -ri 's|%CONFIG%|'"${config}"'|g'                                              "$output_file"
+
+    if [[ ${codebase} == "ddaamg" ]]; then
+        case "${source_type}" in
+            "ones")
+                source_type=0
+            ;;
+            "random")
+                source_type=2
+            ;;
+            *)
+                echo "${FUNCNAME[0]}: source_type \"$source_type\" not element of {ones,random}" >> /dev/stderr
+                exit 1
+                ;;
+        esac
+    fi
     sed -ri 's|%SOURCE_TYPE%|'"${source_type}"'|g'                                    "$output_file"
 }
 
