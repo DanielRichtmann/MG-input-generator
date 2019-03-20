@@ -55,12 +55,14 @@ PARAMETERS (NECESSARY)
 function print_usage() {
     local -r text="
 USAGE:
-    $(basename "$0") <global_lattice> <mpi_decomposition> <levels>
+    $(basename "$0") <global_lattice> <mpi_decomposition> <levels> [<config>]
 
 PARAMETERS (NECESSARY)
     <global_lattice>    Global lattice in the form \"X.Y.Z.T\"
     <mpi_decomposition> MPI decomposition of the lattice in the form \"X.Y.Z.T\"
     <levels>            Number of levels to be used (must be ∈ {2,3,4})
+PARAMETERS (OPTIONAL)
+    <config>            Path to gauge configuration (if not given, script will construct a canonical path)
 "
 
     echo "$text" >> /dev/stderr
@@ -170,7 +172,7 @@ function replace_parameters_in_file() {
 }
 
 function create_mg_inputfiles() {
-    if [[ $# != 3 ]]; then
+    if [[ $# != 3 ]] && [[ $# != 4 ]]; then
         print_usage
         return 1
     fi
@@ -178,6 +180,7 @@ function create_mg_inputfiles() {
     local -r global_lattice="$1"; shift
     local -r mpi_decomposition="$1"; shift
     n_levels="$1"; shift
+    [[ $# == 1 ]] && local config="$1"; shift || local config=""
 
     local -r OLD_IFS=$IFS
     IFS='.' read -r a_global_lattsize_x[0] a_global_lattsize_y[0] a_global_lattsize_z[0] a_global_lattsize_t[0] <<< "$global_lattice"
@@ -194,7 +197,7 @@ function create_mg_inputfiles() {
     . "$params_file"
 
     local -r lattsize_string=${a_global_lattsize_x[0]}x${a_global_lattsize_y[0]}x${a_global_lattsize_z[0]}x${a_global_lattsize_t[0]}
-    local -r config=$config_dir/grid_gauge_config_hot.sequence_1.latt_size_${lattsize_string}.seeds_1x2x3x4
+    [[ -z $config ]] && config=$config_dir/grid_gauge_config_hot.sequence_1.latt_size_${lattsize_string}.seeds_1x2x3x4
 
     if [[ ! -r $config ]]; then
         echo "${FUNCNAME[0]}: gauge configuration \"$config\" not present or not readable" >> /dev/stderr
