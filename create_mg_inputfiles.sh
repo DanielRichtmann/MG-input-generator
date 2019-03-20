@@ -12,7 +12,6 @@ declare -r output_dir_base=$script_dir/output
 
 # Define some global variables
 declare -ar a_codebase=("grid" "ddaamg")
-declare -Ar a_file_extension=(["grid"]=xml ["ddaamg"]=ini)
 declare -ai a_global_lattsize_x=()
 declare -ai a_global_lattsize_y=()
 declare -ai a_global_lattsize_z=()
@@ -26,6 +25,32 @@ declare -i  mpi_decomposition_y
 declare -i  mpi_decomposition_z
 declare -i  mpi_decomposition_t
 declare -i  n_levels
+
+function file_extension() {
+    local -r usage="
+Usage: ${FUNCNAME[0]} <codebase>
+
+PARAMETERS (NECESSARY)
+    <codebase> must be ∈ (grid, ddaamg)"
+
+    if [[ $# != 1 ]]; then
+        echo "$usage" >> /dev/stderr
+        return 1
+    else
+        local -r codebase=$1
+        case $codebase in
+            grid)
+                echo "xml"
+            ;;
+            ddaamg)
+                echo "ini"
+            ;;
+            *)
+                echo "$usage" >> /dev/stderr
+                return 1
+        esac
+    fi
+}
 
 function print_usage() {
     local -r text="
@@ -179,9 +204,9 @@ function create_mg_inputfiles() {
     calculate_lattice_sizes
 
     for codebase in "${a_codebase[@]}"; do
-        local template=$template_dir/$codebase/${n_levels}_lvls.${a_file_extension[$codebase]}
+        local template=$template_dir/$codebase/${n_levels}_lvls."$(file_extension $codebase)"
         local output_dir=$output_dir_base/$codebase
-        local output_file=$output_dir/mg_params.${n_levels}_lvls.${a_file_extension[$codebase]}
+        local output_file=$output_dir/mg_params.${n_levels}_lvls."$(file_extension $codebase)"
 
         mkdir -p "$output_dir"
         cp "$template" "$output_file"
